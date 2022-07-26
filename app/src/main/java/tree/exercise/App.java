@@ -4,6 +4,8 @@
 package tree.exercise;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.awt.geom.Point2D;
 
 public class App {
   private static String[] species = {"Pine", "Cedar", "Juniper", "Fir", "Cypress", "Redwood", "Sequoia", "Yew", "Hemlock", "Oak"}; 
@@ -12,17 +14,73 @@ public class App {
     int x = 1;
     for(int i = 0; i < 5; i ++) {
       for(String specie: species) {
-        forest.add(new Tree(specie, x, 1));
+        Integer xLocation = treePlacement();
+        Integer yLocation = treePlacement();
+        // if (isPlotEmpy(xLocation, yLocation)){
+        //   forest.add(new Tree(specie, xLocation, yLocation));
+        // } 
+
+        while (isPlotEmpy(xLocation, yLocation) == false){
+          xLocation = treePlacement();
+          yLocation = treePlacement();
+          // forest.add(new Tree(specie, xLocation, yLocation));
+        }
+        forest.add(new Tree(specie, xLocation, yLocation));
+        
         growAllTrees();
         x++;
       }
     }
   }
 
+  private static Integer treePlacement(){
+    Random rand = new Random();
+    int randomNum = rand.nextInt((100 - 1) + 1) + 1;
+    return randomNum;
+  }
+
+  private static Boolean isPlotEmpy(int x, int y){
+    for(Tree tree: forest) {
+      if (tree.positionInForest[0] == x && tree.positionInForest[1] == y){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private static Double calculateDistanceBetweenTwoPoints(int x, int y, int x_nearest, int y_nearest){
+    return Point2D.distance(x,y,x_nearest,y_nearest);
+  }
+
+  private static Double findNearestTreeDistance(Tree tree){
+    Double nearestTree = Double.MAX_VALUE;
+
+    for(Tree otherTree: forest) {
+      if (tree != otherTree){
+        Integer x = tree.positionInForest[0];
+        Integer y = tree.positionInForest[1];
+        Integer xNearest = otherTree.positionInForest[0];
+        Integer yNearest = otherTree.positionInForest[0];
+        if (nearestTree > calculateDistanceBetweenTwoPoints(x, y, xNearest, yNearest)){
+          nearestTree = calculateDistanceBetweenTwoPoints(x, y, xNearest, yNearest);
+        }
+      }
+    }
+    return nearestTree;
+  }
+
+  private static Boolean canPhotosynthesise(Tree tree){
+    Double nearestTree = findNearestTreeDistance(tree);
+    System.out.printf("%s \n", nearestTree);
+    return (nearestTree * 4) > tree.height;
+  }
+
   private static void growAllTrees() {
     for(Tree tree: forest) {
-      tree.photosynthesise();
-      tree.grow();
+      if (canPhotosynthesise(tree)){
+        tree.photosynthesise();
+        tree.grow();
+      }
     }
   }
 
