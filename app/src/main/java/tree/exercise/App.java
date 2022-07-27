@@ -17,9 +17,6 @@ public class App {
       for(String specie: species) {
         Integer xLocation = treePlacement();
         Integer yLocation = treePlacement();
-        // if (isPlotEmpy(xLocation, yLocation)){
-        //   forest.add(new Tree(specie, xLocation, yLocation));
-        // } 
 
         while (isPlotEmpy(xLocation, yLocation) == false){
           xLocation = treePlacement();
@@ -40,12 +37,14 @@ public class App {
 
   }
 
+  // Creates a random number to place a tree in the map
   private static Integer treePlacement(){
     Random rand = new Random();
     int randomNum = rand.nextInt((10 - 1) + 1) + 1;
     return randomNum;
   }
 
+  // Checks to see if the place on the Forest Map is empty, if not run tree placement method again
   private static Boolean isPlotEmpy(int x, int y){
     for(Tree tree: forest) {
       if (tree.positionInForest[0] == x && tree.positionInForest[1] == y){
@@ -55,6 +54,7 @@ public class App {
     return true;
   }
 
+  //Creates a 2D array to look like a grid, full of a Character provided in method
   static String[][] fillGrid(int rows, int cols, String cell){
     String[][] grid = new String[rows][cols];
 
@@ -64,10 +64,10 @@ public class App {
     for (int i = 1; i < rows; i++) {
         grid[i] = Arrays.copyOf(row, cols);
     }
-    grid[5][5] = "P";
     return grid;
   }
 
+  //Returns grid that has the placement of the trees added
   static String[][] findLocationOfTreeInForest(String[][] grid){
     for(Tree tree: forest) {
       grid[tree.positionInForest[0]-1][tree.positionInForest[1]-1] = "P";
@@ -75,6 +75,7 @@ public class App {
     return grid;
   }
 
+  // Creates a forest map to print in the Terminal
   static void createForestMap(String[][] grid) {
     
     for (int i = 0; i < grid.length; i++) {
@@ -95,10 +96,12 @@ public class App {
     }
 }
 
+  //Calculate the distance of the nearest tree
   private static Double calculateDistanceBetweenTwoPoints(int x, int y, int x_nearest, int y_nearest){
     return Point2D.distance(x,y,x_nearest,y_nearest);
   }
 
+  //Finds the nearest tree and calculates the distance
   private static Double findNearestTreeDistance(Tree tree){
     Double nearestTree = Double.MAX_VALUE;
 
@@ -116,12 +119,13 @@ public class App {
     return nearestTree;
   }
 
+  // Checks if tree can photosynthesise if the nearest tree is something something
   private static Boolean canPhotosynthesise(Tree tree){
     Double nearestTree = findNearestTreeDistance(tree);
-    // System.out.printf("This is the location of the nearest tree %s \n", nearestTree);
     return (nearestTree * 4) > tree.height;
   }
 
+  //Every tree grows for each time period or loop
   private static void growAllTrees() {
     for(Tree tree: forest) {
       if (canPhotosynthesise(tree)){
