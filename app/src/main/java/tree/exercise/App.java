@@ -34,10 +34,9 @@ public class App {
     }
     int size = forest.size(); 
     System.out.println("size of forestlist after creating: " + size);
-    // createForestMap();
-    // DisplayGrid();
     String[][] grid = fillGrid(10, 10, "x");
-    printGrid(grid);
+    String[][] filledForest = findLocationOfTreeInForest(grid);
+    createForestMap(filledForest);
 
   }
 
@@ -56,27 +55,6 @@ public class App {
     return true;
   }
 
-  // private static String createForestMap(){
-  //   StringBuilder forestMap = new StringBuilder();
-  //   for(int i = 0; i < 10; i ++) {
-  //     forestMap.append("0");
-  //   }
-  //   System.out.println(forestMap.toString());
-  //   return forestMap.toString();
-  // }
-
-  public static void createForestMap(){
-    final int size = 10;
-    int grid[][] = new int [size][size];
-    for (int[] r : grid) {
-        for (int x : r) {
-          // System.out.print(grid[5][0]);
-          System.out.printf("%2d  ", x);
-        }
-        System.out.println();
-    }
-  }
-
   static String[][] fillGrid(int rows, int cols, String cell){
     String[][] grid = new String[rows][cols];
 
@@ -90,7 +68,14 @@ public class App {
     return grid;
   }
 
-  static void printGrid(String[][] grid) {
+  static String[][] findLocationOfTreeInForest(String[][] grid){
+    for(Tree tree: forest) {
+      grid[tree.positionInForest[0]-1][tree.positionInForest[1]-1] = "P";
+    }
+    return grid;
+  }
+
+  static void createForestMap(String[][] grid) {
     
     for (int i = 0; i < grid.length; i++) {
         if (i == 0) {
@@ -109,35 +94,6 @@ public class App {
         System.out.println();
     }
 }
-
-
-
-  public static void DisplayGrid() {
-    int[][] numList = new int[10][10];
-    int column;
-    for (int row = 0; row < 10; row++) {
-
-      for (column = 0; column < 10; column++) {
-          numList[row][column] = 0;
-          if (row == 5 && column == 5) {
-            System.out.print(numList[5][5] + " 7 ");
-          } else {
-            System.out.print(numList[row][column] + "   ");
-          }
-        }
-      System.out.println("   ");
-    }
-    // System.out.println("Greater than 75:");
-
-    // for (int row = 0; row < 10; row++) {
-    //     for (column = 0; column < 10; column++) {
-    //         if (numList[row][column] > 75) {
-    //             System.out.print(numList[row][column] + ",");
-    //         }
-    //       }
-    //   }
-        // return walkgrid;
-    }
 
   private static Double calculateDistanceBetweenTwoPoints(int x, int y, int x_nearest, int y_nearest){
     return Point2D.distance(x,y,x_nearest,y_nearest);
