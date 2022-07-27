@@ -4,6 +4,7 @@
 package tree.exercise;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.awt.geom.Point2D;
 
@@ -12,7 +13,7 @@ public class App {
   private static ArrayList<Tree> forest = new ArrayList<Tree>();
   public static void main(String[] args) {
     int x = 1;
-    for(int i = 0; i < 5; i ++) {
+    for(int i = 0; i < 2; i ++) {
       for(String specie: species) {
         Integer xLocation = treePlacement();
         Integer yLocation = treePlacement();
@@ -31,11 +32,18 @@ public class App {
         x++;
       }
     }
+    int size = forest.size(); 
+    System.out.println("size of forestlist after creating: " + size);
+    // createForestMap();
+    // DisplayGrid();
+    String[][] grid = fillGrid(10, 10, "x");
+    printGrid(grid);
+
   }
 
   private static Integer treePlacement(){
     Random rand = new Random();
-    int randomNum = rand.nextInt((100 - 1) + 1) + 1;
+    int randomNum = rand.nextInt((10 - 1) + 1) + 1;
     return randomNum;
   }
 
@@ -47,6 +55,89 @@ public class App {
     }
     return true;
   }
+
+  // private static String createForestMap(){
+  //   StringBuilder forestMap = new StringBuilder();
+  //   for(int i = 0; i < 10; i ++) {
+  //     forestMap.append("0");
+  //   }
+  //   System.out.println(forestMap.toString());
+  //   return forestMap.toString();
+  // }
+
+  public static void createForestMap(){
+    final int size = 10;
+    int grid[][] = new int [size][size];
+    for (int[] r : grid) {
+        for (int x : r) {
+          // System.out.print(grid[5][0]);
+          System.out.printf("%2d  ", x);
+        }
+        System.out.println();
+    }
+  }
+
+  static String[][] fillGrid(int rows, int cols, String cell){
+    String[][] grid = new String[rows][cols];
+
+    String[] row = new String[cols];
+    Arrays.fill(row, cell);
+    grid[0] = row;
+    for (int i = 1; i < rows; i++) {
+        grid[i] = Arrays.copyOf(row, cols);
+    }
+    grid[5][5] = "P";
+    return grid;
+  }
+
+  static void printGrid(String[][] grid) {
+    
+    for (int i = 0; i < grid.length; i++) {
+        if (i == 0) {
+            System.out.print("   ");
+            for (int j = 0; j < grid[0].length; j++) {
+                System.out.printf("%2d ", j + 1);
+            }
+            System.out.println();
+        }
+        for (int j = 0; j < grid[i].length; j++) {
+            if (j == 0) {
+                System.out.printf("%2d:", i + 1);
+            }
+            System.out.printf("%2s ", grid[i][j]);
+        }
+        System.out.println();
+    }
+}
+
+
+
+  public static void DisplayGrid() {
+    int[][] numList = new int[10][10];
+    int column;
+    for (int row = 0; row < 10; row++) {
+
+      for (column = 0; column < 10; column++) {
+          numList[row][column] = 0;
+          if (row == 5 && column == 5) {
+            System.out.print(numList[5][5] + " 7 ");
+          } else {
+            System.out.print(numList[row][column] + "   ");
+          }
+        }
+      System.out.println("   ");
+    }
+    // System.out.println("Greater than 75:");
+
+    // for (int row = 0; row < 10; row++) {
+    //     for (column = 0; column < 10; column++) {
+    //         if (numList[row][column] > 75) {
+    //             System.out.print(numList[row][column] + ",");
+    //         }
+    //       }
+    //   }
+        // return walkgrid;
+    }
 
   private static Double calculateDistanceBetweenTwoPoints(int x, int y, int x_nearest, int y_nearest){
     return Point2D.distance(x,y,x_nearest,y_nearest);
@@ -71,7 +162,7 @@ public class App {
 
   private static Boolean canPhotosynthesise(Tree tree){
     Double nearestTree = findNearestTreeDistance(tree);
-    System.out.printf("%s \n", nearestTree);
+    // System.out.printf("This is the location of the nearest tree %s \n", nearestTree);
     return (nearestTree * 4) > tree.height;
   }
 

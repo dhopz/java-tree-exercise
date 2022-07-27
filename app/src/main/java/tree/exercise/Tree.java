@@ -10,7 +10,7 @@ public class Tree {
   private String species;
   private HashMap<String,Integer> treeLimits = new HashMap<String,Integer>();
 
-
+  //Constructor Method for creating a Tree
   public Tree(String species, int posX, int posY) {
     this.species = species;
     this.positionInForest = new int[2];
@@ -33,7 +33,9 @@ public class Tree {
 
   public void grow() {
     // System.out.printf("%s \n",treeLimits.get(this.species));
-      if (this.foodReserves >= treeLimits.get(this.species)) {          
+      if (this.foodReserves >= treeLimits.get(this.species)) { 
+          // System.out.printf("this species tree is reach it's limit %s \n",treeLimits.get(this.species));
+          
           this.foodReserves = 0; // After growing, the excess of nutrients is lost
           this.height++;
           if(isMature()) {
