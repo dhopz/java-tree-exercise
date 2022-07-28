@@ -13,7 +13,7 @@ public class App {
   private static ArrayList<Tree> forest = new ArrayList<Tree>();
   public static void main(String[] args) {
     int x = 1;
-    for(int i = 0; i < 2; i ++) {
+    for(int i = 0; i < 3; i ++) {
       for(String specie: species) {
         Integer xLocation = treePlacement();
         Integer yLocation = treePlacement();
@@ -31,7 +31,7 @@ public class App {
     }
     int size = forest.size(); 
     System.out.println("size of forestlist after creating: " + size);
-    String[][] grid = fillGrid(10, 10, "x");
+    String[][] grid = fillGrid(10, 10, ".");
     String[][] filledForest = findLocationOfTreeInForest(grid);
     createForestMap(filledForest);
 
